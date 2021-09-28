@@ -75,9 +75,9 @@ WSGI_APPLICATION = 'databaseproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'pizzadb.db',
-        'USER': 'root',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pizzadb',
+        'USER': 'django',
         'PASSWORD': '1234',
         'HOST': '127.0.0.1',
         'PORT': '5432',
