@@ -1,0 +1,966 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.3
+-- Dumped by pg_dump version 13.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: pizzadatabase; Type: SCHEMA; Schema: -; Owner: django
+--
+
+CREATE SCHEMA pizzadatabase;
+
+
+ALTER SCHEMA pizzadatabase OWNER TO django;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: area; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.area (
+    id bigint NOT NULL,
+    code character varying(45) NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.area OWNER TO django;
+
+--
+-- Name: area_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.area_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.area_id_seq OWNER TO django;
+
+--
+-- Name: area_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.area_id_seq OWNED BY pizzadatabase.area.id;
+
+
+--
+-- Name: customer; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.customer (
+    id bigint NOT NULL,
+    area_id bigint,
+    address character varying(45) NOT NULL,
+    name character varying(45) NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.customer OWNER TO django;
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.customer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.customer_id_seq OWNER TO django;
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.customer_id_seq OWNED BY pizzadatabase.customer.id;
+
+
+--
+-- Name: delivery_person; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.delivery_person (
+    id bigint NOT NULL,
+    restaurant_id bigint,
+    name character varying(45) NOT NULL,
+    area_id bigint,
+    availibility boolean NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.delivery_person OWNER TO django;
+
+--
+-- Name: delivery_person_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.delivery_person_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.delivery_person_id_seq OWNER TO django;
+
+--
+-- Name: delivery_person_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.delivery_person_id_seq OWNED BY pizzadatabase.delivery_person.id;
+
+
+--
+-- Name: dessert; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.dessert (
+    id bigint NOT NULL,
+    product_id bigint,
+    name character varying(45) NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.dessert OWNER TO django;
+
+--
+-- Name: dessert_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.dessert_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.dessert_id_seq OWNER TO django;
+
+--
+-- Name: dessert_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.dessert_id_seq OWNED BY pizzadatabase.dessert.id;
+
+
+--
+-- Name: drink; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.drink (
+    id bigint NOT NULL,
+    product_id bigint,
+    name character varying(45) NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.drink OWNER TO django;
+
+--
+-- Name: drink_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.drink_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.drink_id_seq OWNER TO django;
+
+--
+-- Name: drink_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.drink_id_seq OWNED BY pizzadatabase.drink.id;
+
+
+--
+-- Name: order_to_product; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.order_to_product (
+    order_id bigint NOT NULL,
+    product_id bigint
+);
+
+
+ALTER TABLE pizzadatabase.order_to_product OWNER TO django;
+
+--
+-- Name: order_to_product_order_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.order_to_product_order_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.order_to_product_order_id_seq OWNER TO django;
+
+--
+-- Name: order_to_product_order_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.order_to_product_order_id_seq OWNED BY pizzadatabase.order_to_product.order_id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.orders (
+    id bigint NOT NULL,
+    customer_id bigint,
+    restaurant_id bigint,
+    status character varying(45) NOT NULL,
+    order_time timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.orders OWNER TO django;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.orders_id_seq OWNER TO django;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.orders_id_seq OWNED BY pizzadatabase.orders.id;
+
+
+--
+-- Name: pizza; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.pizza (
+    id bigint NOT NULL,
+    product_id bigint,
+    name character varying(45) NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.pizza OWNER TO django;
+
+--
+-- Name: pizza_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.pizza_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.pizza_id_seq OWNER TO django;
+
+--
+-- Name: pizza_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.pizza_id_seq OWNED BY pizzadatabase.pizza.id;
+
+
+--
+-- Name: product; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.product (
+    id bigint NOT NULL,
+    price double precision NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.product OWNER TO django;
+
+--
+-- Name: product_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.product_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.product_id_seq OWNER TO django;
+
+--
+-- Name: product_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.product_id_seq OWNED BY pizzadatabase.product.id;
+
+
+--
+-- Name: restaurant; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.restaurant (
+    id bigint NOT NULL,
+    name character varying(45) NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.restaurant OWNER TO django;
+
+--
+-- Name: restaurant_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.restaurant_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.restaurant_id_seq OWNER TO django;
+
+--
+-- Name: restaurant_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.restaurant_id_seq OWNED BY pizzadatabase.restaurant.id;
+
+
+--
+-- Name: toppings; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.toppings (
+    id bigint NOT NULL,
+    vegetarian boolean NOT NULL
+);
+
+
+ALTER TABLE pizzadatabase.toppings OWNER TO django;
+
+--
+-- Name: toppings_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.toppings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.toppings_id_seq OWNER TO django;
+
+--
+-- Name: toppings_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.toppings_id_seq OWNED BY pizzadatabase.toppings.id;
+
+
+--
+-- Name: toppings_to_pizza; Type: TABLE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE TABLE pizzadatabase.toppings_to_pizza (
+    pizza_id bigint NOT NULL,
+    toppings_id bigint
+);
+
+
+ALTER TABLE pizzadatabase.toppings_to_pizza OWNER TO django;
+
+--
+-- Name: toppings_to_pizza_pizza_id_seq; Type: SEQUENCE; Schema: pizzadatabase; Owner: django
+--
+
+CREATE SEQUENCE pizzadatabase.toppings_to_pizza_pizza_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pizzadatabase.toppings_to_pizza_pizza_id_seq OWNER TO django;
+
+--
+-- Name: toppings_to_pizza_pizza_id_seq; Type: SEQUENCE OWNED BY; Schema: pizzadatabase; Owner: django
+--
+
+ALTER SEQUENCE pizzadatabase.toppings_to_pizza_pizza_id_seq OWNED BY pizzadatabase.toppings_to_pizza.pizza_id;
+
+
+--
+-- Name: area id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.area ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.area_id_seq'::regclass);
+
+
+--
+-- Name: customer id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.customer ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.customer_id_seq'::regclass);
+
+
+--
+-- Name: delivery_person id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.delivery_person ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.delivery_person_id_seq'::regclass);
+
+
+--
+-- Name: dessert id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.dessert ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.dessert_id_seq'::regclass);
+
+
+--
+-- Name: drink id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.drink ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.drink_id_seq'::regclass);
+
+
+--
+-- Name: order_to_product order_id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.order_to_product ALTER COLUMN order_id SET DEFAULT nextval('pizzadatabase.order_to_product_order_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.orders ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.orders_id_seq'::regclass);
+
+
+--
+-- Name: pizza id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.pizza ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.pizza_id_seq'::regclass);
+
+
+--
+-- Name: product id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.product ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.product_id_seq'::regclass);
+
+
+--
+-- Name: restaurant id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.restaurant ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.restaurant_id_seq'::regclass);
+
+
+--
+-- Name: toppings id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.toppings ALTER COLUMN id SET DEFAULT nextval('pizzadatabase.toppings_id_seq'::regclass);
+
+
+--
+-- Name: toppings_to_pizza pizza_id; Type: DEFAULT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.toppings_to_pizza ALTER COLUMN pizza_id SET DEFAULT nextval('pizzadatabase.toppings_to_pizza_pizza_id_seq'::regclass);
+
+
+--
+-- Data for Name: area; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.area (id, code) FROM stdin;
+\.
+
+
+--
+-- Data for Name: customer; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.customer (id, area_id, address, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: delivery_person; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.delivery_person (id, restaurant_id, name, area_id, availibility) FROM stdin;
+\.
+
+
+--
+-- Data for Name: dessert; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.dessert (id, product_id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: drink; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.drink (id, product_id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: order_to_product; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.order_to_product (order_id, product_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.orders (id, customer_id, restaurant_id, status, order_time) FROM stdin;
+\.
+
+
+--
+-- Data for Name: pizza; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.pizza (id, product_id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: product; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.product (id, price) FROM stdin;
+\.
+
+
+--
+-- Data for Name: restaurant; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.restaurant (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: toppings; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.toppings (id, vegetarian) FROM stdin;
+\.
+
+
+--
+-- Data for Name: toppings_to_pizza; Type: TABLE DATA; Schema: pizzadatabase; Owner: django
+--
+
+COPY pizzadatabase.toppings_to_pizza (pizza_id, toppings_id) FROM stdin;
+\.
+
+
+--
+-- Name: area_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.area_id_seq', 1, true);
+
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.customer_id_seq', 1, true);
+
+
+--
+-- Name: delivery_person_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.delivery_person_id_seq', 1, true);
+
+
+--
+-- Name: dessert_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.dessert_id_seq', 1, true);
+
+
+--
+-- Name: drink_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.drink_id_seq', 1, true);
+
+
+--
+-- Name: order_to_product_order_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.order_to_product_order_id_seq', 1, true);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.orders_id_seq', 1, true);
+
+
+--
+-- Name: pizza_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.pizza_id_seq', 1, true);
+
+
+--
+-- Name: product_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.product_id_seq', 1, true);
+
+
+--
+-- Name: restaurant_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.restaurant_id_seq', 1, true);
+
+
+--
+-- Name: toppings_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.toppings_id_seq', 1, true);
+
+
+--
+-- Name: toppings_to_pizza_pizza_id_seq; Type: SEQUENCE SET; Schema: pizzadatabase; Owner: django
+--
+
+SELECT pg_catalog.setval('pizzadatabase.toppings_to_pizza_pizza_id_seq', 1, true);
+
+
+--
+-- Name: area idx_16389_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.area
+    ADD CONSTRAINT idx_16389_primary PRIMARY KEY (id);
+
+
+--
+-- Name: customer idx_16395_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.customer
+    ADD CONSTRAINT idx_16395_primary PRIMARY KEY (id);
+
+
+--
+-- Name: delivery_person idx_16401_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.delivery_person
+    ADD CONSTRAINT idx_16401_primary PRIMARY KEY (id);
+
+
+--
+-- Name: dessert idx_16407_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.dessert
+    ADD CONSTRAINT idx_16407_primary PRIMARY KEY (id);
+
+
+--
+-- Name: drink idx_16413_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.drink
+    ADD CONSTRAINT idx_16413_primary PRIMARY KEY (id);
+
+
+--
+-- Name: orders idx_16419_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.orders
+    ADD CONSTRAINT idx_16419_primary PRIMARY KEY (id);
+
+
+--
+-- Name: pizza idx_16431_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.pizza
+    ADD CONSTRAINT idx_16431_primary PRIMARY KEY (id);
+
+
+--
+-- Name: product idx_16437_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.product
+    ADD CONSTRAINT idx_16437_primary PRIMARY KEY (id);
+
+
+--
+-- Name: restaurant idx_16443_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.restaurant
+    ADD CONSTRAINT idx_16443_primary PRIMARY KEY (id);
+
+
+--
+-- Name: toppings idx_16449_primary; Type: CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.toppings
+    ADD CONSTRAINT idx_16449_primary PRIMARY KEY (id);
+
+
+--
+-- Name: idx_16395_area_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16395_area_id ON pizzadatabase.customer USING btree (area_id);
+
+
+--
+-- Name: idx_16401_area_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16401_area_id ON pizzadatabase.delivery_person USING btree (area_id);
+
+
+--
+-- Name: idx_16401_restaurant_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16401_restaurant_id ON pizzadatabase.delivery_person USING btree (restaurant_id);
+
+
+--
+-- Name: idx_16407_product_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16407_product_id ON pizzadatabase.dessert USING btree (product_id);
+
+
+--
+-- Name: idx_16413_product_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16413_product_id ON pizzadatabase.drink USING btree (product_id);
+
+
+--
+-- Name: idx_16419_customer_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16419_customer_id ON pizzadatabase.orders USING btree (customer_id);
+
+
+--
+-- Name: idx_16419_restaurant_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16419_restaurant_id ON pizzadatabase.orders USING btree (restaurant_id);
+
+
+--
+-- Name: idx_16425_order_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16425_order_id ON pizzadatabase.order_to_product USING btree (order_id);
+
+
+--
+-- Name: idx_16425_product_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16425_product_id ON pizzadatabase.order_to_product USING btree (product_id);
+
+
+--
+-- Name: idx_16431_product_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16431_product_id ON pizzadatabase.pizza USING btree (product_id);
+
+
+--
+-- Name: idx_16455_pizza_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16455_pizza_id ON pizzadatabase.toppings_to_pizza USING btree (pizza_id);
+
+
+--
+-- Name: idx_16455_toppings_id; Type: INDEX; Schema: pizzadatabase; Owner: django
+--
+
+CREATE INDEX idx_16455_toppings_id ON pizzadatabase.toppings_to_pizza USING btree (toppings_id);
+
+
+--
+-- Name: customer customer_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.customer
+    ADD CONSTRAINT customer_ibfk_1 FOREIGN KEY (area_id) REFERENCES pizzadatabase.area(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: delivery_person delivery_person_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.delivery_person
+    ADD CONSTRAINT delivery_person_ibfk_1 FOREIGN KEY (restaurant_id) REFERENCES pizzadatabase.restaurant(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: delivery_person delivery_person_ibfk_2; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.delivery_person
+    ADD CONSTRAINT delivery_person_ibfk_2 FOREIGN KEY (area_id) REFERENCES pizzadatabase.area(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: dessert dessert_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.dessert
+    ADD CONSTRAINT dessert_ibfk_1 FOREIGN KEY (product_id) REFERENCES pizzadatabase.product(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: drink drink_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.drink
+    ADD CONSTRAINT drink_ibfk_1 FOREIGN KEY (product_id) REFERENCES pizzadatabase.product(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: order_to_product order_to_product_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.order_to_product
+    ADD CONSTRAINT order_to_product_ibfk_1 FOREIGN KEY (order_id) REFERENCES pizzadatabase.orders(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: order_to_product order_to_product_ibfk_2; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.order_to_product
+    ADD CONSTRAINT order_to_product_ibfk_2 FOREIGN KEY (product_id) REFERENCES pizzadatabase.product(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: orders orders_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.orders
+    ADD CONSTRAINT orders_ibfk_1 FOREIGN KEY (customer_id) REFERENCES pizzadatabase.customer(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: orders orders_ibfk_2; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.orders
+    ADD CONSTRAINT orders_ibfk_2 FOREIGN KEY (restaurant_id) REFERENCES pizzadatabase.restaurant(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: pizza pizza_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.pizza
+    ADD CONSTRAINT pizza_ibfk_1 FOREIGN KEY (product_id) REFERENCES pizzadatabase.product(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: toppings_to_pizza toppings_to_pizza_ibfk_1; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.toppings_to_pizza
+    ADD CONSTRAINT toppings_to_pizza_ibfk_1 FOREIGN KEY (pizza_id) REFERENCES pizzadatabase.pizza(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: toppings_to_pizza toppings_to_pizza_ibfk_2; Type: FK CONSTRAINT; Schema: pizzadatabase; Owner: django
+--
+
+ALTER TABLE ONLY pizzadatabase.toppings_to_pizza
+    ADD CONSTRAINT toppings_to_pizza_ibfk_2 FOREIGN KEY (toppings_id) REFERENCES pizzadatabase.toppings(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
