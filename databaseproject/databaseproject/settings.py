@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'databaseproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pizzadb',
         'USER': 'django',
         'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
