@@ -18,9 +18,17 @@ INSERT INTO pizza (name) VALUES ('Crudo');
 INSERT INTO pizza (name) VALUES ('Al Pesto');
 */
 
+/*
 INSERT INTO drink (name) VALUES ('Fanta');
 INSERT INTO drink (name) VALUES ('Cola');
 INSERT INTO drink (name) VALUES ('Mineral water');
 INSERT INTO drink (name) VALUES ('Jupiler');
 INSERT INTO drink (name) VALUES ('Sparkling water');
+*/
 
+/*
+INSERT INTO dessert (name) VALUES ('Vanilla Ice Cream');
+INSERT INTO dessert (name) VALUES ('Chocolate Ice Cream');
+INSERT INTO dessert (name) VALUES ('Tiramisu');
+INSERT INTO dessert (name) VALUES ('Chocolate Mousse');
+*/
