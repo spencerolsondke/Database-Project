@@ -93,6 +93,8 @@ class Pizza(models.Model):
 class Toppings(models.Model):
     name = models.CharField(max_length=45)
     vegetarian = models.IntegerField()
+    price = models.FloatField()
+
 
     class Meta:
         managed = True
