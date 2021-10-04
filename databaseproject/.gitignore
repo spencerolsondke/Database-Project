@@ -1,3 +1,2 @@
-/index/__pycache__/*
-/databaseproject/__pycache__/*
+*/__pycache__/*
 *.pyc
