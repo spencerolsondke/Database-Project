@@ -83,6 +83,9 @@ class Toppings(models.Model):
         managed = True
         db_table = 'toppings'
 
+    def __str__(self):
+        return self.name
+
 class Pizza(models.Model):
     product = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=45)
@@ -91,3 +94,6 @@ class Pizza(models.Model):
     class Meta:
         managed = True
         db_table = 'pizza'
+
+    def __str__(self):
+        return self.name
