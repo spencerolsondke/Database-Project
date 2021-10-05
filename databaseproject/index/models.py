@@ -15,6 +15,8 @@ class Area(models.Model):
         managed = True
         db_table = 'area'
 
+    def __str__(self):
+        return self.code
 
 class Product(models.Model):
     price = models.FloatField()
@@ -22,6 +24,9 @@ class Product(models.Model):
     class Meta:
         managed = True
         db_table = 'product'
+
+    def __str__(self):
+        return self.id 
 
 
 class Customer(models.Model):
@@ -32,6 +37,9 @@ class Customer(models.Model):
     class Meta:
         managed = True
         db_table = 'customer'
+
+    def __str__(self):
+        return self.id
 
 
 class Orders(models.Model):
@@ -54,6 +62,9 @@ class DeliveryPerson(models.Model):
         managed = True
         db_table = 'delivery_person'
 
+    def __str__(self):
+        return self.name
+
 
 class Dessert(models.Model):
     product = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
@@ -63,6 +74,9 @@ class Dessert(models.Model):
         managed = True
         db_table = 'dessert'
 
+    def __str__(self):
+        return self.name
+
 
 class Drink(models.Model):
     product = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
@@ -71,6 +85,9 @@ class Drink(models.Model):
     class Meta:
         managed = True
         db_table = 'drink'
+
+    def __str__(self):
+        return self.name
 
 
 class Toppings(models.Model):
