@@ -25,7 +25,7 @@ class Product(models.Model):
 
 
 class Customer(models.Model):
-    area = models.ForeignKey(Area, models.DO_NOTHING, blank=True, null=True)
+    area = models.ForeignKey(Area, models.CASCADE, blank=True, null=True)
     address = models.CharField(max_length=45)
     name = models.CharField(max_length=45)
 
@@ -35,9 +35,10 @@ class Customer(models.Model):
 
 
 class Orders(models.Model):
-    customer = models.ForeignKey(Customer, models.DO_NOTHING, blank=True, null=True)
+    customer = models.ForeignKey(Customer, models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=45)
     order_time = models.DateTimeField()
+    products = models.ManyToManyField(Product)
 
     class Meta:
         managed = True
@@ -46,7 +47,7 @@ class Orders(models.Model):
 
 class DeliveryPerson(models.Model):
     name = models.CharField(max_length=45)
-    area = models.ForeignKey(Area, models.DO_NOTHING, blank=True, null=True)
+    area = models.ForeignKey(Area, models.CASCADE, blank=True, null=True)
     availibility = models.IntegerField()
 
     class Meta:
@@ -55,7 +56,7 @@ class DeliveryPerson(models.Model):
 
 
 class Dessert(models.Model):
-    product = models.ForeignKey(Product, models.DO_NOTHING, blank=True, null=True)
+    product = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=45)
 
     class Meta:
@@ -64,30 +65,12 @@ class Dessert(models.Model):
 
 
 class Drink(models.Model):
-    product = models.ForeignKey(Product, models.DO_NOTHING, blank=True, null=True)
+    product = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=45)
 
     class Meta:
         managed = True
         db_table = 'drink'
-
-
-class OrderToProduct(models.Model):
-    order = models.ForeignKey(Orders, models.DO_NOTHING)
-    product = models.ForeignKey(Product, models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'order_to_product'
-
-
-class Pizza(models.Model):
-    product = models.ForeignKey(Product, models.DO_NOTHING, blank=True, null=True)
-    name = models.CharField(max_length=45)
-
-    class Meta:
-        managed = True
-        db_table = 'pizza'
 
 
 class Toppings(models.Model):
@@ -100,11 +83,11 @@ class Toppings(models.Model):
         managed = True
         db_table = 'toppings'
 
-
-class ToppingsToPizza(models.Model):
-    pizza = models.ForeignKey(Pizza, models.DO_NOTHING)
-    toppings = models.ForeignKey(Toppings, models.DO_NOTHING, blank=True, null=True)
+class Pizza(models.Model):
+    product = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
+    name = models.CharField(max_length=45)
+    toppings = models.ManyToManyField(Toppings)
 
     class Meta:
         managed = True
-        db_table = 'toppings_to_pizza'
+        db_table = 'pizza'
