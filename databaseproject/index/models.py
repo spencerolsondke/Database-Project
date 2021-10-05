@@ -33,6 +33,8 @@ class Customer(models.Model):
     area = models.ForeignKey(Area, models.CASCADE, blank=True, null=True)
     address = models.CharField(max_length=45)
     name = models.CharField(max_length=45)
+    username = models.CharField(max_length=45)
+    password = models.CharField(max_length=45)
 
     class Meta:
         managed = True
