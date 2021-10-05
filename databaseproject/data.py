@@ -27,23 +27,23 @@ toppings = {
     ('Ricotta', 1.99, True)
 }
 
-pizzas = [
-   ('Prosciutto e funghi', "Mozzarella"),
-   ('Detroit-Style',),
-   ('Capricciosa',),
-   ('Quattro fromaggi',),
-   ('Caprese',),
-   ('Calzone',),
-   ('Margherita',),
-   ('Napoletana',),
-   ('Diavola',),
-   ('Melanzane',),
-   ('Hawaii',),
-   ('Frutti di Mare',),
-   ('Tonno',),
-   ('Prosciutto',),
-   ('Al Pesto',),
-]
+# pizzas = [
+#    ('Prosciutto e funghi', "Mozzarella"),
+#    ('Detroit-Style',),
+#    ('Capricciosa',),
+#    ('Quattro fromaggi',),
+#    ('Caprese',),
+#    ('Calzone',),
+#    ('Margherita',),
+#    ('Napoletana',),
+#    ('Diavola',),
+#    ('Melanzane',),
+#    ('Hawaii',),
+#    ('Frutti di Mare',),
+#    ('Tonno',),
+#    ('Prosciutto',),
+#    ('Al Pesto',),
+# ]
 
 for t in toppings:
     if(len(model.Toppings.objects.filter(name=t[0]))==0):
@@ -51,11 +51,11 @@ for t in toppings:
         temp.save()
 
 
-for p in pizzas:
-    if(len(model.Pizza.objects.filter(name=p[0]))==0):
-        temp = model.Pizza(name=p[0])
-        temp.save()
-        if(type(p) == 'tuple'):
-            for t in p[1:]:
-                temp.toppings.add(t)
+# for p in pizzas:
+#     if(len(model.Pizza.objects.filter(name=p[0]))==0):
+#         temp = model.Pizza(name=p[0])
+#         temp.save()
+#         if(type(p) == 'tuple'):
+#             for t in p[1:]:
+#                 temp.toppings.add(t)
         

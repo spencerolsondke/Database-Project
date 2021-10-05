@@ -5,4 +5,4 @@ from index.models import Pizza
 # Create your views here
 def index(request):
     context = { "pizzalist": Pizza.objects.all()}
-    return render(request, 'index.html', context) 
+    return render(request, 'login.html', context) 
