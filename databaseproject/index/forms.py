@@ -7,6 +7,22 @@ class Login_Form(forms.Form):
     username = forms.CharField(label="Username", max_length=45)
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
+    def clean(self):
+        cleaned_data = super().clean()
+        entered_username = cleaned_data['username']
+        entered_password = cleaned_data['password']
+
+        temp_user_list = Customer.objects.filter(username=entered_username)
+        if temp_user_list.exists() and temp_user_list.count() == 1:
+            temp_user = temp_user_list.first()
+            if temp_user.password == entered_password:
+                return
+
+        raise ValidationError(
+            "Incorrect login details; please try again",
+            code = "incorrect credentials"
+        )
+
 class Register_Form(forms.Form):
     username = forms.CharField(label="Username", max_length=45)
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
