@@ -10,10 +10,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='toppings',
-            name='price',
-            field=models.FloatField(default=-1),
-            preserve_default=False,
-        ),
     ]
