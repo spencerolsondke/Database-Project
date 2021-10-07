@@ -26,7 +26,7 @@ class Product(models.Model):
         db_table = 'product'
 
     def __str__(self):
-        return self.id 
+        return str(self.id) 
 
 
 class Customer(models.Model):

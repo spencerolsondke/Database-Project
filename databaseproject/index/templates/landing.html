@@ -7,8 +7,14 @@
     </head>
     <body>
         <h1>Be prepared to dine on the finest Italian pizza, {{ first_name }}</h1>
-        {% for name, price in pizza_list %}
-            <button>{{ name }} {{ price }}</button><br />
+        {% for name, vegetarian, toppings, price in pizza_list %}
+            <button>{{ name }} pizza - {{ vegetarian }} {{ toppings }} {{ price }}</button><br />
+        {% endfor %}
+        {% for name, price in drink_list %}
+            <button>{{ name }} drink - {{ price }}</button><br />
+        {% endfor %}
+        {% for name, price in dessert_list %}
+            <button>{{ name }} dessert - {{ price }}</button><br />
         {% endfor %}
     </body>
 </html>

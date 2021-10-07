@@ -1,11 +1,13 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
-from index.models import Pizza
-from index.models import Area
-from index.models import Customer
+from index.models import Pizza, Area, Drink, Dessert, Customer
 from index.forms import Register_Form
 from index.forms import Login_Form
+from index.utils import compute_pizza_prices as cpp
+from index.utils import compute_drink_dessert_prices as cddp
+from index.utils import is_pizza_vegetarian as ipv
+from index.utils import get_pizza_toppings as gpt
 
 # Create your views here
 def index(request):
@@ -24,10 +26,25 @@ def index(request):
 
 def landing(request):
     first_name = Customer.objects.get(id=request.session['user_id']).name.split(' ')[0]
-    pizza_prices = [0.01, 0.02]
+
+    pizzas = Pizza.objects.all()
+    pizza_prices = ["{:,.2f}€".format(i) for i in cpp()]
+    pizza_veg = ipv()
+    pizza_toppings = [[topping.name for topping in pizza] for pizza in gpt()]
+
+    drinks = Drink.objects.all()
+    drink_prices = ["{:,.2f}€".format(i) for i in cddp(Drink)]
+    print(drink_prices)
+
+    desserts = Dessert.objects.all()
+    dessert_prices = ["{:,.2f}€".format(i) for i in cddp(Dessert)]
+    print(dessert_prices)
+
     context = {
         "first_name": first_name,
-        "pizza_list": zip(Pizza.objects.all(), pizza_prices)
+        "pizza_list": zip(pizzas, pizza_veg, pizza_toppings, pizza_prices),
+        "drink_list": zip(drinks, drink_prices),
+        "dessert_list": zip(desserts, dessert_prices),
     }
     return render(request, 'landing.html', context)
 
