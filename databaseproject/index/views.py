@@ -24,8 +24,10 @@ def index(request):
 
 def landing(request):
     first_name = Customer.objects.get(id=request.session['user_id']).name.split(' ')[0]
+    pizza_prices = [0.01, 0.02]
     context = {
-        "first_name": first_name
+        "first_name": first_name,
+        "pizza_list": zip(Pizza.objects.all(), pizza_prices)
     }
     return render(request, 'landing.html', context)
 
@@ -34,12 +36,12 @@ def sign_up(request):
         form = Register_Form(request.POST)
         if form.is_valid():
             # Add the customer to the database
-            area = Area.objects.filter(code=form.data.get('area_code')).get() # Access the area object to add it as a foreign key
+            area = Area.objects.get(id=form.data.get('area_code')) # Access the area object to add it as a foreign key
             customer = Customer.objects.create(area=area, address=form.data.get('address'), name=form.data.get('name'), 
                     username=form.data.get('username'), password=form.data.get('confirm_password'))
             customer.save()
 
-            return HttpResponseRedirect("/index/")
+            return HttpResponseRedirect("/")
 
     else:
         form = Register_Form()  

@@ -1,9 +1,14 @@
 <!DOCTYPE html>
+{% load static tailwind_tags %}
 <html>
     <head>
+        {% tailwind_css %}
         <title>Mamma Mia Pizza</title>
     </head>
     <body>
         <h1>Be prepared to dine on the finest Italian pizza, {{ first_name }}</h1>
+        {% for name, price in pizza_list %}
+            <button>{{ name }} {{ price }}</button><br />
+        {% endfor %}
     </body>
 </html>

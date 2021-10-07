@@ -41,7 +41,7 @@ class Customer(models.Model):
         db_table = 'customer'
 
     def __str__(self):
-        return self.id
+        return self.name
 
 
 class Orders(models.Model):

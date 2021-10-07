@@ -913,6 +913,13 @@ select {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+h1 {
+  text-align: center;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-style: italic;
+}
+
 body {
   --tw-bg-opacity: 1;
   background-color: rgba(209, 250, 229, var(--tw-bg-opacity));

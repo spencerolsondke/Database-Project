@@ -29,7 +29,7 @@ class Register_Form(forms.Form):
     confirm_password = forms.CharField(label="Confirm Password", widget=forms.PasswordInput())
     name = forms.CharField(label="Full Name", max_length=45)
     address = forms.CharField(label = "Address", max_length=45)
-    areas = [(str(i), str(i)) for i in list(Area.objects.all())]
+    areas = [(i.id, str(i)) for i in list(Area.objects.all())]
     area_code = forms.ChoiceField(label="Area Code", choices=areas)
     
     def clean(self):
