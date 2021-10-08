@@ -2,7 +2,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from index.models import Pizza, Area, Drink, Dessert, Customer
-from index.forms import Register_Form
+from index.forms import Confirm_Product_Form, Register_Form
 from index.forms import Login_Form
 from index.utils import compute_pizza_prices as cpp
 from index.utils import compute_drink_dessert_prices as cddp
@@ -32,21 +32,23 @@ def landing(request):
     pizza_prices = ["{:,.2f}€".format(i) for i in cpp()]
     pizza_veg = ipv()
     pizza_toppings = [[topping.name for topping in pizza] for pizza in gpt()]
-    pizza_ids = [pizza.id for pizza in pizzas]
+    pizza_ids = [pizza.product for pizza in pizzas]
 
     drinks = Drink.objects.all()
     drink_prices = ["{:,.2f}€".format(i) for i in cddp(Drink)]
+    drink_ids = [drink.product for drink in drinks]
     print(drink_prices)
 
     desserts = Dessert.objects.all()
     dessert_prices = ["{:,.2f}€".format(i) for i in cddp(Dessert)]
+    dessert_ids = [dessert.product for dessert in desserts]
     print(dessert_prices)
 
     context = {
         "first_name": first_name,
         "pizza_list": zip(pizzas, pizza_veg, pizza_toppings, pizza_prices, pizza_ids),
-        "drink_list": zip(drinks, drink_prices),
-        "dessert_list": zip(desserts, dessert_prices),
+        "drink_list": zip(drinks, drink_prices, drink_ids),
+        "dessert_list": zip(desserts, dessert_prices, dessert_ids),
     }
     return render(request, 'landing.html', context)
 
@@ -76,9 +78,18 @@ def confirm_order(request):
     pass
 
 
-def product_confirm(request):
-    if request.method == 'POST':
-        form = Product_Confirm_Form(request.POST)
-        if form.is_valid():
-            request.session["product_list"].append(form.data.get('product'))
+def confirm_product(request):
+    if request.method == "POST":
+        form = Confirm_Product_Form(request.POST)
+        request.session['product_list'].append(form.data.get('id'))
+        pass
+
+    else:
+        form = Confirm_Product_Form(initial={'id': request.GET['product_id']})
+
+    context = { 
+        "product_id": request.GET['product_id'],
+        "form": form
+    }
+    return render(request, 'confirm_product.html', context)
 

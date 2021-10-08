@@ -4,17 +4,43 @@
     <head>
         {% tailwind_css %}
         <title>Mamma Mia Pizza</title>
+        <script>
+            function navigate(id) {
+                nav_list = ['pizzas', 'drinks', 'desserts']
+                for(const i of nav_list) {
+                    if(id==i) document.getElementById(i).classList.remove('hidden')
+                    else document.getElementById(i).classList.add('hidden')
+                }
+            }
+        </script>
     </head>
     <body>
-        <h1>Be prepared to dine on the finest Italian pizza, {{ first_name }}</h1>
-        {% for name, vegetarian, toppings, price, id in pizza_list %}
-            <a href="confirm_order/?product_id={{id}}"><button type='button'>{{ name }} pizza - {{ vegetarian }} {{ toppings }} {{ price }}</button></a><br />
-        {% endfor %}
-        {% for name, price in drink_list %}
-            <button>{{ name }} drink - {{ price }}</button><br />
-        {% endfor %}
-        {% for name, price in dessert_list %}
-            <button>{{ name }} dessert - {{ price }}</button><br />
-        {% endfor %}
+        <div class = 'w-screen bg-green-500 mb-5 pt-2 shadow-md'>
+            <div class="bg-gray-100 w-1/2 mx-auto my-2 content-center rounded-lg border-2 border-green-800">
+                <h1>Be prepared to dine on the finest Italian pizza, {{ first_name }}</h1>
+            </div>
+            <nav class="bg-green-600 flex">
+                <button onclick="navigate('pizzas')"><div>Pizzas</div></button>
+                <button onclick="navigate('drinks')"><div>Drinks</div></button>
+                <button onclick="navigate('desserts')"><div>Desserts</div></button>
+            </nav>
+        </div>
+        <div>
+            <div id="pizzas">
+                {% for name, vegetarian, toppings, price, id in pizza_list %}
+                    <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} pizza - {{ vegetarian }} {{ toppings }} {{ price }}</button></a><br />
+                {% endfor %}
+            </div>
+            <div class="hidden" id="drinks">
+                {% for name, price, id in drink_list %}
+                    <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} drink - {{ price }}</button></a><br />
+                {% endfor %}
+            </div>
+            <div class="hidden" id="desserts">
+                {% for name, price, id in dessert_list %}
+                    <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} dessert - {{ price }}</button></a><br />
+                {% endfor %}
+            </div>
+       </div>
     </body>
 </html>
