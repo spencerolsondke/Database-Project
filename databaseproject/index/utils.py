@@ -28,7 +28,7 @@ class Order_Badge():
     def set_delivery_person(self, dp: DeliveryPerson):
         self.delivery_person = dp
     
-    def append_order(self, order: Order):
+    def append_order(self, order: Orders):
         self.badge.append(order)
 
     def set_status(status:str) -> None:

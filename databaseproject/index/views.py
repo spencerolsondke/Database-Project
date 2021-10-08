@@ -24,6 +24,7 @@ def index(request):
     }
     return render(request, 'login.html', context) 
 
+
 def landing(request):
     first_name = Customer.objects.get(id=request.session['user_id']).name.split(' ')[0]
 
@@ -31,6 +32,7 @@ def landing(request):
     pizza_prices = ["{:,.2f}€".format(i) for i in cpp()]
     pizza_veg = ipv()
     pizza_toppings = [[topping.name for topping in pizza] for pizza in gpt()]
+    pizza_ids = [pizza.id for pizza in pizzas]
 
     drinks = Drink.objects.all()
     drink_prices = ["{:,.2f}€".format(i) for i in cddp(Drink)]
@@ -42,11 +44,12 @@ def landing(request):
 
     context = {
         "first_name": first_name,
-        "pizza_list": zip(pizzas, pizza_veg, pizza_toppings, pizza_prices),
+        "pizza_list": zip(pizzas, pizza_veg, pizza_toppings, pizza_prices, pizza_ids),
         "drink_list": zip(drinks, drink_prices),
         "dessert_list": zip(desserts, dessert_prices),
     }
     return render(request, 'landing.html', context)
+
 
 def sign_up(request):
     if request.method == "POST":
@@ -65,3 +68,17 @@ def sign_up(request):
 
     context = { "form": form }
     return render(request, 'sign-up.html', context) 
+
+
+def confirm_order(request):
+    context = { "product_list": request.session["product_list"]}
+    # Add to the badge
+    pass
+
+
+def product_confirm(request):
+    if request.method == 'POST':
+        form = Product_Confirm_Form(request.POST)
+        if form.is_valid():
+            request.session["product_list"].append(form.data.get('product'))
+

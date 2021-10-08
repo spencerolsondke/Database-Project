@@ -7,8 +7,8 @@
     </head>
     <body>
         <h1>Be prepared to dine on the finest Italian pizza, {{ first_name }}</h1>
-        {% for name, vegetarian, toppings, price in pizza_list %}
-            <button>{{ name }} pizza - {{ vegetarian }} {{ toppings }} {{ price }}</button><br />
+        {% for name, vegetarian, toppings, price, id in pizza_list %}
+            <a href="confirm_order/?product_id={{id}}"><button type='button'>{{ name }} pizza - {{ vegetarian }} {{ toppings }} {{ price }}</button></a><br />
         {% endfor %}
         {% for name, price in drink_list %}
             <button>{{ name }} drink - {{ price }}</button><br />
