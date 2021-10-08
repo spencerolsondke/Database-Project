@@ -20,8 +20,8 @@ def is_pizza_vegetarian() -> list:
     for pizza in pizzas:
         veg.append(not pizza.toppings.filter(vegetarian=False).exists())
     
-    return veg
 
+    return veg
 
 def get_pizza_toppings() -> list:
     pizza_toppings = []

@@ -48,6 +48,7 @@ class Orders(models.Model):
     customer = models.ForeignKey(Customer, models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=45)
     order_time = models.DateTimeField()
+    order_delivery_time = models.DateTimeField()
     products = models.ManyToManyField(Product)
 
     class Meta:
