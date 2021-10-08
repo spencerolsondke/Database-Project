@@ -1,5 +1,38 @@
-from index.models import Pizza, Drink, Dessert
+from index.models import Pizza, Drink, Dessert, Order, DeliveryPerson, Area
 from index import models
+import datetime
+
+class Order_Badge():
+    badge = []
+    delivery_person = None
+    time = None
+
+    def __init__(self, orders:list, time:datetime):
+        self.badge = orders
+        self.time = time
+    
+    def get_badge(self) -> list:
+        return self.badge
+
+    def get_area(self) -> Area:
+        return self.badge[1].customer.area
+
+    def get_delivery_person(self) -> DeliveryPerson:
+        return self.delivery_person
+
+    def get_time(self) -> datetime:
+        return self.time
+
+    def set_delivery_person(self, dp: DeliveryPerson):
+        self.delivery_person = dp
+    
+    def append_order(self, order: Order):
+        self.badge.append(order)
+
+    def set_status(status:str) -> None:
+        for order in badge:
+            order.status = status
+
 
 def compute_pizza_prices() -> list:
     prices = []
