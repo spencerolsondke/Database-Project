@@ -1,4 +1,4 @@
-from index.models import Pizza, Drink, Dessert, Order, DeliveryPerson, Area
+from index.models import Pizza, Drink, Dessert, Orders, DeliveryPerson, Area
 from index import models
 import datetime
 
@@ -6,6 +6,8 @@ class Order_Badge():
     badge = []
     delivery_person = None
     time = None
+    delivery_start_time = None
+    status = ''
 
     def __init__(self, orders:list, time:datetime):
         self.badge = orders
@@ -30,8 +32,26 @@ class Order_Badge():
         self.badge.append(order)
 
     def set_status(status:str) -> None:
+        self.status = status
         for order in badge:
             order.status = status
+            order.save()
+    
+    def get_status(self) -> str:
+        return self.status
+
+    def set_delivery_start_time(self, time: datetime) -> None:
+        self.delivery_start_time = time
+        for order in badge:
+            order.order_delivery_time = time
+            order.save()
+
+    def get_delivery_start_time(self) -> None:
+        return self.delivery_start_time
+    
+    def set_delivery_person_available(self) -> None:
+        self.delivery_person.availibility = True
+        self.delivery_person.save()
 
 
 def compute_pizza_prices() -> list:
