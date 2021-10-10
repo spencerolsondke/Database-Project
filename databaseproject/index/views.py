@@ -8,6 +8,7 @@ from index.utils import compute_pizza_prices as cpp
 from index.utils import compute_drink_dessert_prices as cddp
 from index.utils import is_pizza_vegetarian as ipv
 from index.utils import get_pizza_toppings as gpt
+import index.apps as apps
 
 # Create your views here
 def index(request):
@@ -37,12 +38,10 @@ def landing(request):
     drinks = Drink.objects.all()
     drink_prices = ["{:,.2f}€".format(i) for i in cddp(Drink)]
     drink_ids = [drink.product for drink in drinks]
-    print(drink_prices)
 
     desserts = Dessert.objects.all()
     dessert_prices = ["{:,.2f}€".format(i) for i in cddp(Dessert)]
     dessert_ids = [dessert.product for dessert in desserts]
-    print(dessert_prices)
 
     context = {
         "first_name": first_name,
@@ -75,17 +74,25 @@ def sign_up(request):
 def confirm_order(request):
     context = { "product_list": request.session["product_list"]}
     # Add to the badge
+    apps.badges.append('test')
     pass
 
 
 def confirm_product(request):
+    # The session variable has always 'test' in the list, even if we restart the server
+    if 'product_list' not in request.session:
+        request.session['product_list'] = []
+    product_list = request.session['product_list']
+    
     if request.method == "POST":
         form = Confirm_Product_Form(request.POST)
-        request.session['product_list'].append(form.data.get('id'))
-        pass
+        product_list = product_list+[form.data.get('id')]
+        request.session['product_list'] = product_list
 
     else:
-        form = Confirm_Product_Form(initial={'id': request.GET['product_id']})
+        form = Confirm_Product_Form(initial={'id': request.GET['product_id']}) # Error with product_id
+
+    print(request.session['product_list'])
 
     context = { 
         "product_id": request.GET['product_id'],

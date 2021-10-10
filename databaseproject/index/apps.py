@@ -19,6 +19,8 @@ def _check_order_process_time():
 #             badges.remove(badge)
 
 def _check_order_delivered():
+    print('yes')
+    print(badges)
     for badge in badges:
         # If it's been more than 30 mins, then the delivery person is available again
         if datetime.utcnow() - badge.get_delivery_start_time() >= 60*30:
