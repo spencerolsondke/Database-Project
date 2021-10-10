@@ -7,7 +7,7 @@ class Order_Badge():
     delivery_person = None
     time = None
     delivery_start_time = None
-    status = ''
+    status = 'In process'
 
     def __init__(self, orders:list, time:datetime):
         self.badge = orders
