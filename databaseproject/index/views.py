@@ -15,6 +15,7 @@ def index(request):
     if request.method == "POST":
         form = Login_Form(request.POST)
         if form.is_valid():
+            request.session.clear()
             request.session['user_id'] = Customer.objects.get(username=form.data.get('username')).id
             return HttpResponseRedirect("/landing/")
     else:
@@ -86,16 +87,18 @@ def confirm_product(request):
     
     if request.method == "POST":
         form = Confirm_Product_Form(request.POST)
-        product_list = product_list+[form.data.get('id')]
+        for i in range(form.data.get('amount')) :
+            product_list = product_list+[form.data.get('id')]
         request.session['product_list'] = product_list
 
-    else:
-        form = Confirm_Product_Form(initial={'id': request.GET['product_id']})
+    if request.method == "GET":
+        form = Confirm_Product_Form({'id': request.GET['product_id']})
+
 
     print(request.session['product_list'])
 
     context = { 
-        "product_id": request.GET['product_id'], # Error with product_id    -> change to request.session['product_list']??
+        "product_id": request.GET.get('product_id'), # Error with product_id    -> change to request.session['product_list']??
         "form": form
     }
     return render(request, 'confirm_product.html', context)

@@ -5,9 +5,9 @@
         {% tailwind_css %}
     </head>
     <body>
-        <h2>{{ product_id }}</h2>
         <form action="/confirm_product/", method="POST">
             {% csrf_token %}
+            {{form.id}}
             <table>
                 <tr>
                     <td>Amount:</td><td>{{form.amount}}</td>

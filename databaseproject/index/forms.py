@@ -1,11 +1,12 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms.widgets import HiddenInput
 from index.models import Area
 from index.models import Customer
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Confirm_Product_Form(forms.Form):
-    id = forms.IntegerField()
+    id = forms.IntegerField(widget=forms.HiddenInput)
     amount = forms.IntegerField(widget=forms.NumberInput, validators=[MaxValueValidator(100), MinValueValidator(1)])
 
 class Login_Form(forms.Form):
