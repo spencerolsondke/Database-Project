@@ -15,10 +15,12 @@ def index(request):
     if request.method == "POST":
         form = Login_Form(request.POST)
         if form.is_valid():
+            request.session.flush()
             request.session['user_id'] = Customer.objects.get(username=form.data.get('username')).id
             return HttpResponseRedirect("/landing/")
     else:
         form = Login_Form()
+    
     context = { 
         "pizzalist": Pizza.objects.all(),
         "form": form,
@@ -82,6 +84,7 @@ def confirm_product(request):
     # The session variable has always 'test' in the list, even if we restart the server
     if 'product_list' not in request.session:
         request.session['product_list'] = []
+
     product_list = request.session['product_list']
     
     if request.method == "POST":
@@ -92,10 +95,11 @@ def confirm_product(request):
     else:
         form = Confirm_Product_Form(initial={'id': request.GET['product_id']})
 
+    print(form.data.get('id'))
     print(request.session['product_list'])
 
     context = { 
-        "product_id": request.GET['product_id'], # Error with product_id    -> change to request.session['product_list']??
+        "product_id": request.GET.get('product_id'), # Error with product_id    -> change to request.session['product_list']??
         "form": form
     }
     return render(request, 'confirm_product.html', context)
