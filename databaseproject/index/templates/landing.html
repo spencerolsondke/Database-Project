@@ -28,7 +28,11 @@
         <div>
             <div id="pizzas">
                 {% for name, vegetarian, toppings, price, id in pizza_list %}
-                    <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} pizza - {{ vegetarian }} {{ toppings }} {{ price }}</button></a><br />
+                    {% if vegetarian %}
+                        <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - pizza - Vegetarian - {{ toppings }} - {{ price }}</button></a><br />
+                    {% else %}
+                        <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - pizza - {{ toppings }} - {{ price }}</button></a><br />
+                    {% endif %}
                 {% endfor %}
             </div>
             <div class="hidden" id="drinks">
