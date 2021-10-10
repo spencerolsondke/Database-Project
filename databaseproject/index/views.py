@@ -99,4 +99,3 @@ def confirm_product(request):
         "form": form
     }
     return render(request, 'confirm_product.html', context)
-
