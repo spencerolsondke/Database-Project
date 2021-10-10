@@ -95,7 +95,7 @@ def confirm_product(request):
     print(request.session['product_list'])
 
     context = { 
-        "product_id": request.GET['product_id'], # Error with product_id
+        "product_id": request.GET['product_id'], # Error with product_id    -> change to request.session['product_list']??
         "form": form
     }
     return render(request, 'confirm_product.html', context)
