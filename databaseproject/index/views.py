@@ -84,7 +84,7 @@ def confirm_order(request):
         products = request.session["product_list"]
         customer = Customer.objects.filter(id=request.session['user_id']).get()
         order = Orders.objects.create(customer=customer, status="In process", 
-                order_time=datetime.utcnow(), products=products)
+                order_time=datetime.utcnow(), products=products.set())
         order.save()
         print(order)
         # TODO Reset the session variable that stores the product list
