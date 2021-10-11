@@ -114,7 +114,7 @@ def confirm_product(request):
     if request.method == "POST":
         form = Confirm_Product_Form(request.POST)
         # for i in range(int(form.data.get('amount'))) :
-        product_list = product_list+[{ 'product_id': form.data.get('id'), 'amount': int(form.data.get('amount'))}]
+        product_list = product_list+[{ 'product_id': int(form.data.get('id')), 'amount': int(form.data.get('amount'))}]
         request.session['product_list'] = product_list
         print(request.session['product_list'])
         return HttpResponseRedirect('/landing/')
