@@ -1,6 +1,8 @@
 from django.apps import AppConfig
+from index.utils import Order_Badge
 
 badges = []
+current_badge = Order_Badge((), datetime.utcnow())
 
 def _check_order_process_time():
     for badge in badges:
@@ -13,10 +15,12 @@ def _check_order_process_time():
             dp.save()
 
 
-# def _check_badges_to_delete():
-#     for badge in badges:
-#         if badge.get_status() == 'Delivered':
-#             badges.remove(badge)
+def _check_badge_and_add_it():
+    # Add the current badge to the list
+    badges.append(current_badge)
+    # Reset the current badge
+    current_badge = Order_Badge((), datetime.utcnow())
+
 
 def _check_order_delivered():
     print('yes')
@@ -59,5 +63,6 @@ class IndexConfig(AppConfig):
         
         # schedule.every(1).minutes.do(_check_order_process_time)
         # schedule.every(1).minutes.do(_check_order_delivered)
+        # schedule.every(1).minutes.do(_check_badge_and_add_it)
         
         stop_running = run_continuously()

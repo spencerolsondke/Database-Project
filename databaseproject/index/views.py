@@ -1,13 +1,14 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
-from index.models import Pizza, Area, Drink, Dessert, Customer
-from index.forms import Confirm_Product_Form, Register_Form
+from index.models import Pizza, Area, Drink, Dessert, Customer, Orders
+from index.forms import Confirm_Product_Form, Register_Form, Confirm_Order_Form
 from index.forms import Login_Form
 from index.utils import compute_pizza_prices as cpp, get_Product
 from index.utils import compute_drink_dessert_prices as cddp
 from index.utils import is_pizza_vegetarian as ipv
 from index.utils import get_pizza_toppings as gpt
+from index.utils import Order_Badge
 import index.apps as apps
 
 # Create your views here
@@ -76,10 +77,28 @@ def sign_up(request):
 
 
 def confirm_order(request):
-    context = { "product_list": request.session["product_list"]}
-    # Add to the badge
-    apps.badges.append('test')
-    pass
+    if request.method == "POST":
+        # Add the order to the database
+        products = request.session["product_list"]
+        order = Orders.objects.create(customer=Customer.objects.filter(id=request.session['user_id']), 
+                status="In process", order_time=datetime.utcnow(), products=products)
+        order.save()
+
+        # TODO Reset the session variable that stores the product list
+    
+        # Add the order to the badge
+        apps.badge.append_order(order)
+    
+        context = { 
+            "product_list": request.session["product_list"],
+            "user_id": request.session["user_id"] 
+        }
+    
+    else:
+        context = {}
+
+    # TODO Render a frame that thanks the user for the order
+    return render(request, "order_confirmed.html", context)
 
 
 def confirm_product(request):
