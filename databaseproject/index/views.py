@@ -8,7 +8,7 @@ from index.utils import compute_pizza_prices as cpp, get_Product
 from index.utils import compute_drink_dessert_prices as cddp
 from index.utils import is_pizza_vegetarian as ipv
 from index.utils import get_pizza_toppings as gpt
-from index.utils import Order_Badge, current_badge
+from index.utils import Order_Badge, current_badge, _get_current_badge, _add_order_to_current_badge
 import index.apps as apps
 from datetime import datetime
 
@@ -88,7 +88,7 @@ def confirm_order(request):
     if request.method == "GET":
         # Add the order to the database
         products = request.session["product_list"]
-        customer = Customer.objects.filter(id=request.session['user_id']).get()
+        customer = Customer.objects.get(id=request.session['user_id'])
         order = Orders.objects.create(customer=customer, status="In process", 
                 order_time=datetime.utcnow(), order_delivery_time="1990-01-01 00:00")
         
@@ -98,12 +98,11 @@ def confirm_order(request):
             products_to_order = Product_To_Orders.objects.create(order_id=order, product_id=Product.objects.get(id=i["product_id"]), amount=i["amount"])
             products_to_order.save()
         
-        # TODO Reset the session variable that stores the product list
+        # Reset the session variable that stores the product list
         request.session['product_list'] = []
     
         # Add the order to the badge
-        customer_area = customer.area.id
-        current_badge[customer_area].append_order(order)
+        _add_order_to_current_badge(customer.area.id-1, order)
     
         context = { 
             "product_list": request.session["product_list"],

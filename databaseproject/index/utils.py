@@ -16,7 +16,7 @@ def get_Product(product_id):
 
 
 class Order_Badge():
-    badge = []
+    badge = None
     area = None
     delivery_person = None
     time = None
@@ -24,6 +24,7 @@ class Order_Badge():
     status = 'In process'
 
     def __init__(self, area:Area, time:datetime):
+        self.badge = []
         self.area = area
         self.time = time
     
@@ -107,6 +108,17 @@ def get_pizza_toppings() -> list:
 
 def compute_drink_dessert_prices(entity:models) -> list:
     return [i.product.price for i in entity.objects.all()]
+
+
+def _get_current_badge() -> list:
+    return current_badge
+
+def _add_order_to_current_badge(index: int, order: Orders):
+    current_badge[index].append_order(order)
+
+def _reset_current_badge() -> None:
+    current_time = datetime.now()
+    current_badge = [Order_Badge(i, current_time) for i in Area.objects.all()]
 
 
 current_time = datetime.now()

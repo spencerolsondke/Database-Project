@@ -31,9 +31,9 @@ def _check_order_delivered():
 
 def _check_badge_and_add_it():
     # Add the current badge to the list
-    badges.append(current_badge)
+    badges.append(_get_current_badge())
     # Reset the current badge
-    current_badge = [Order_Badge(i, current_time) for i in Area.objects.all()]
+    _reset_current_badge()
 
 
 class IndexConfig(AppConfig):
@@ -46,13 +46,12 @@ class IndexConfig(AppConfig):
 
             from index.models import Orders, Customer, DeliveryPerson
             from django.utils import timezone
-            from index.utils import Order_Badge
-            from index.utils import current_badge
+            from index.utils import Order_Badge, _get_current_badge, _add_order_to_current_badge, _reset_current_badge
             import threading
 
             def _print_current_badge():
-                # print(current_badge)
-                pass
+                print([order_badge.get_badge() for order_badge in _get_current_badge()])
+                # pass
 
             def run_continuously():
                 stop = threading.Event()
@@ -68,7 +67,7 @@ class IndexConfig(AppConfig):
             
             # schedule.every(1).minutes.do(_check_order_process_time)
             # schedule.every(1).minutes.do(_check_order_delivered)
-            schedule.every(1).minutes.do(_check_badge_and_add_it)
+            # schedule.every(1).minutes.do(_check_badge_and_add_it)
             schedule.every(1).seconds.do(_print_current_badge)
             
             stop_running = run_continuously()
