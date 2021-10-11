@@ -77,8 +77,14 @@ def sign_up(request):
     context = { "form": form }
     return render(request, 'sign-up.html', context) 
 
+def clear_order(request):
+    request.session['product_list'] = []
+    return HttpResponseRedirect('/landing/')
 
 def confirm_order(request):
+    if not request.session['product_list']:
+        return HttpResponseRedirect('/landing/')
+
     if request.method == "GET":
         # Add the order to the database
         products = request.session["product_list"]

@@ -9,4 +9,5 @@ urlpatterns = [
     path('landing/', views.landing, name="landing"),
     path('confirm_product/', views.confirm_product, name="confirm_product"),
     path('confirm_order/', views.confirm_order, name='confirm_order'),
+    path('clear_order/', views.clear_order, name='clear_order'),
 ]
