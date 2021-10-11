@@ -49,7 +49,6 @@ class Orders(models.Model):
     status = models.CharField(max_length=45)
     order_time = models.DateTimeField()
     order_delivery_time = models.DateTimeField()
-    products = models.ManyToManyField(Product)
 
     class Meta:
         managed = True
@@ -117,3 +116,16 @@ class Pizza(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Product_To_Orders(models.Model):
+    order_id = models.ForeignKey(Orders, models.CASCADE, blank=True, null=True)
+    product_id = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
+    amount = models.IntegerField()
+
+    class Meta:
+        managed = True
+        db_table = 'product_to_orders'
+
+    def str(self):
+        return f'order: {self.order_id}, product: {self.product_id}, amount: {self.amount}'

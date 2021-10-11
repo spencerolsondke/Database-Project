@@ -51,7 +51,8 @@ class IndexConfig(AppConfig):
             import threading
 
             def _print_current_badge():
-                print(current_badge)
+                # print(current_badge)
+                pass
 
             def run_continuously():
                 stop = threading.Event()
