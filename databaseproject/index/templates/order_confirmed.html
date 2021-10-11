@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+{% load static tailwind_tags %}
 <html>
     <head>
-
+        {% tailwind_css %}
     </head>
     <body>
         <h1>
             Thanks for ordering!
         </h1>
+        <a href="/landing/"><button>Return to Homepage</button></a>
     </body>
 </html>

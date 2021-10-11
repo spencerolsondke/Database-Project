@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   {% load static tailwind_tags %}
+   <head>
+       {% tailwind_css %}
+       <title>Order History</title>
+   </head>
+   <body>
+       <div>
+            <table class="bg-white shadow-md border-2 border-green-700 mx-auto">
+                <tr>
+                    <th>Order Date</th><th class="border-l border-black">Estimated Delivery Time</th><th class="border-l border-black">Status</th>
+                </tr>
+            {% for order, estim, status in order_history %}
+                <tr class="p-1">
+                <td class="p-1 border-t border-b border-black">{{order}}</td><td class="p-1 border-l border-t border-b border-black">{{estim}}</td><td class="p-1 border-l border-t border-b border-black">{{status}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+            <div class="flex"><a class="mx-auto" href="/landing/"><button>Return to Homepage</button></a></div>
+       </div>
+   </body>
+</html>

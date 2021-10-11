@@ -14,7 +14,7 @@ button {
   @apply bg-white m-2 p-2 rounded-lg border-2 border-gray-700 hover:bg-gray-100
 }
 
-nav button {
+nav button, nav a button {
   @apply inline-flex items-center bg-green-600 w-1/12 h-8 content-center text-center border border-green-800 mx-2 my-2 rounded-sm hover:bg-green-800
 }
 
