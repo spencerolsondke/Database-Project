@@ -44,6 +44,7 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+
 class DeliveryPerson(models.Model):
     name = models.CharField(max_length=45)
     area = models.ForeignKey(Area, models.CASCADE, blank=True, null=True)
@@ -106,6 +107,7 @@ class Toppings(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Pizza(models.Model):
     product = models.ForeignKey(Product, models.CASCADE, blank=True, null=True)
