@@ -10,7 +10,7 @@ from index.utils import is_pizza_vegetarian as ipv
 from index.utils import get_pizza_toppings as gpt
 from index.utils import Order_Badge, current_badge, _get_current_badge, _add_order_to_current_badge
 import index.apps as apps
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Create your views here
 def index(request):
@@ -82,7 +82,7 @@ def clear_order(request):
     return HttpResponseRedirect('/landing/')
 
 def confirm_order(request):
-    if not request.session['product_list']:
+    if not request.session['product_list'] or not any(type(get_Product(p["product_id"])).__name__ == "Pizza" for p in request.session['product_list']):
         return HttpResponseRedirect('/landing/')
 
     if request.method == "GET":
@@ -134,3 +134,10 @@ def confirm_product(request):
         "form": form
     }
     return render(request, 'confirm_product.html', context)
+
+def order_status(request):
+    context = { "order_history": zip(Orders.objects.all()[:5], 
+                                    [str(d.order_time + timedelta(minutes=15)) for d in Orders.objects.all()[:5]],
+                                    [o.status for o in Orders.objects.all()])
+    }
+    return render(request, 'order_status.html', context)
