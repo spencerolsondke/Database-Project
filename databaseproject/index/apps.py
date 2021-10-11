@@ -33,7 +33,7 @@ def _check_badge_and_add_it():
     # Add the current badge to the list
     badges.append(current_badge)
     # Reset the current badge
-    current_badge = Order_Badge([], datetime.now())
+    current_badge = [Order_Badge(i, current_time) for i in Area.objects.all()]
 
 
 class IndexConfig(AppConfig):
