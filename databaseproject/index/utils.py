@@ -44,6 +44,9 @@ class Order_Badge():
 
     def set_delivery_person(self, dp: DeliveryPerson):
         self.delivery_person = dp
+        for order in badge:
+            order.delivery_person = dp
+            order.save()
     
     def append_order(self, order: Orders):
         self.badge.append(order)
