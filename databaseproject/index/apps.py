@@ -4,7 +4,6 @@ from datetime import datetime
 
 badges = []
 
-
 def _check_order_process_time():
     for badge in badges:
         if datetime.now() - badge.get_time() >= 60*5:
@@ -34,12 +33,13 @@ class IndexConfig(AppConfig):
     name = 'index'
 
     def ready(self):
+        print('entered')
+
         from index.models import Orders, Customer, DeliveryPerson
         from django.utils import timezone
         from index.utils import Order_Badge
+        from index.utils import current_badge
         import threading
-
-        current_badge = Order_Badge((), datetime.now())
 
         def _check_badge_and_add_it():
             # Add the current badge to the list
@@ -58,8 +58,6 @@ class IndexConfig(AppConfig):
             continuous_thread = Schedule_Thread()
             continuous_thread.start()
             return stop
-        
-        print('entered')
         
         # schedule.every(1).minutes.do(_check_order_process_time)
         # schedule.every(1).minutes.do(_check_order_delivered)
