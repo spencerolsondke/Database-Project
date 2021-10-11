@@ -1,6 +1,6 @@
 from index.models import Pizza, Drink, Dessert, Orders, DeliveryPerson, Area
 from index import models
-import datetime
+from datetime import datetime
 
 def get_Product(product_id):
     pizza = Pizza.objects.filter(product=product_id)
@@ -100,3 +100,6 @@ def get_pizza_toppings() -> list:
 
 def compute_drink_dessert_prices(entity:models) -> list:
     return [i.product.price for i in entity.objects.all()]
+
+
+current_badge = Order_Badge((), datetime.now())
