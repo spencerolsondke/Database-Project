@@ -102,4 +102,4 @@ def compute_drink_dessert_prices(entity:models) -> list:
     return [i.product.price for i in entity.objects.all()]
 
 
-current_badge = Order_Badge((), datetime.now())
+current_badge = Order_Badge([], datetime.now())
