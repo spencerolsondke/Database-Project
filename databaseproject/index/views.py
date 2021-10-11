@@ -111,6 +111,7 @@ def confirm_product(request):
         for i in range(int(form.data.get('amount'))) :
             product_list = product_list+[form.data.get('id')]
         request.session['product_list'] = product_list
+        print(request.session['product_list'])
         return HttpResponseRedirect('/landing/')
 
     if request.method == "GET":
