@@ -2,7 +2,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from index.models import Pizza, Area, Drink, Dessert, Customer, Orders
-from index.forms import Confirm_Product_Form, Register_Form, Confirm_Order_Form
+from index.forms import Confirm_Product_Form, Register_Form
 from index.forms import Login_Form
 from index.utils import compute_pizza_prices as cpp, get_Product
 from index.utils import compute_drink_dessert_prices as cddp
