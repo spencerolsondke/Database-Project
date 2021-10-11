@@ -10,6 +10,7 @@ from index.utils import is_pizza_vegetarian as ipv
 from index.utils import get_pizza_toppings as gpt
 from index.utils import Order_Badge
 import index.apps as apps
+from datetime import datetime
 
 # Create your views here
 def index(request):
@@ -78,13 +79,14 @@ def sign_up(request):
 
 
 def confirm_order(request):
-    if request.method == "POST":
+    if request.method == "GET":
         # Add the order to the database
         products = request.session["product_list"]
-        order = Orders.objects.create(customer=Customer.objects.filter(id=request.session['user_id']), 
-                status="In process", order_time=datetime.utcnow(), products=products)
+        customer = Customer.objects.filter(id=request.session['user_id']).get()
+        order = Orders.objects.create(customer=customer, status="In process", 
+                order_time=datetime.utcnow(), products=products)
         order.save()
-
+        print(order)
         # TODO Reset the session variable that stores the product list
     
         # Add the order to the badge
