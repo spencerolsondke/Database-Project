@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from index.models import Pizza, Area, Drink, Dessert, Customer
 from index.forms import Confirm_Product_Form, Register_Form
 from index.forms import Login_Form
-from index.utils import compute_pizza_prices as cpp
+from index.utils import compute_pizza_prices as cpp, get_Product
 from index.utils import compute_drink_dessert_prices as cddp
 from index.utils import is_pizza_vegetarian as ipv
 from index.utils import get_pizza_toppings as gpt
@@ -15,11 +15,7 @@ def index(request):
     if request.method == "POST":
         form = Login_Form(request.POST)
         if form.is_valid():
-<<<<<<< HEAD
-            request.session.clear()
-=======
             request.session.flush()
->>>>>>> ecd1e6e0f64168bb3dff7b9654a5359c9d1cbfa2
             request.session['user_id'] = Customer.objects.get(username=form.data.get('username')).id
             return HttpResponseRedirect("/landing/")
     else:
@@ -49,11 +45,13 @@ def landing(request):
     dessert_prices = ["{:,.2f}€".format(i) for i in cddp(Dessert)]
     dessert_ids = [dessert.product for dessert in desserts]
 
+    order_list = [get_Product(p).name for p in request.session['product_list']]
     context = {
         "first_name": first_name,
         "pizza_list": zip(pizzas, pizza_veg, pizza_toppings, pizza_prices, pizza_ids),
         "drink_list": zip(drinks, drink_prices, drink_ids),
         "dessert_list": zip(desserts, dessert_prices, dessert_ids),
+        "order_list": order_list
     }
     return render(request, 'landing.html', context)
 
@@ -93,16 +91,12 @@ def confirm_product(request):
     
     if request.method == "POST":
         form = Confirm_Product_Form(request.POST)
-        for i in range(form.data.get('amount')) :
+        for i in range(int(form.data.get('amount'))) :
             product_list = product_list+[form.data.get('id')]
         request.session['product_list'] = product_list
 
     if request.method == "GET":
         form = Confirm_Product_Form({'id': request.GET['product_id']})
-
-
-    print(form.data.get('id'))
-    print(request.session['product_list'])
 
     context = { 
         "product_id": request.GET.get('product_id'), # Error with product_id    -> change to request.session['product_list']??

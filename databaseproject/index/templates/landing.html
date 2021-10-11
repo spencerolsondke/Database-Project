@@ -25,25 +25,37 @@
                 <button onclick="navigate('desserts')"><div>Desserts</div></button>
             </nav>
         </div>
-        <div>
-            <div id="pizzas">
-                {% for name, vegetarian, toppings, price, id in pizza_list %}
-                    {% if vegetarian %}
-                        <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - pizza - Vegetarian - {{ toppings }} - {{ price }}</button></a><br />
-                    {% else %}
-                        <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - pizza - {{ toppings }} - {{ price }}</button></a><br />
-                    {% endif %}
-                {% endfor %}
+        <div class="flex flex-row">
+            <div>
+                <div id="pizzas">
+                    {% for name, vegetarian, toppings, price, id in pizza_list %}
+                        {% if vegetarian %}
+                            <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - pizza - Vegetarian - {{ toppings }} - {{ price }}</button></a><br />
+                        {% else %}
+                            <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - pizza - {{ toppings }} - {{ price }}</button></a><br />
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="hidden" id="drinks">
+                    {% for name, price, id in drink_list %}
+                        <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - drink - {{ price }}</button></a><br />
+                    {% endfor %}
+                </div>
+                <div class="hidden" id="desserts">
+                    {% for name, price, id in dessert_list %}
+                        <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - dessert - {{ price }}</button></a><br />
+                    {% endfor %}
+                </div>
             </div>
-            <div class="hidden" id="drinks">
-                {% for name, price, id in drink_list %}
-                    <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - drink - {{ price }}</button></a><br />
-                {% endfor %}
-            </div>
-            <div class="hidden" id="desserts">
-                {% for name, price, id in dessert_list %}
-                    <a href="/confirm_product/?product_id={{id}}"><button>{{ name }} - dessert - {{ price }}</button></a><br />
-                {% endfor %}
+            <div class="bg-green-500 ml-auto p-3 mr-3 mb-3 w-1/5 h-auto shadow-lg border-2 border-black rounded-md">
+                <div class="bg-white border-2 border-black rounded-md">
+                    <ul>
+                        
+                        <li class="bg-gray-100 my-2 p-1">{{name}}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <a href="/confirm_order/"><button>Order</button></a>
             </div>
        </div>
     </body>

@@ -2,6 +2,19 @@ from index.models import Pizza, Drink, Dessert, Orders, DeliveryPerson, Area
 from index import models
 import datetime
 
+def get_Product(product_id):
+    pizza = Pizza.objects.filter(product=product_id)
+    drink = Drink.objects.filter(product=product_id)
+    dessert = Dessert.objects.filter(product=product_id)
+
+    if pizza.exists():
+        return pizza.first()
+    elif drink.exists():
+        return drink.first()
+    elif dessert.exists():
+        return dessert.first()
+
+
 class Order_Badge():
     badge = []
     delivery_person = None
