@@ -16,7 +16,9 @@ def index(request):
     if request.method == "POST":
         form = Login_Form(request.POST)
         if form.is_valid():
-            request.session.flush()
+            # The session variable has always 'test' in the list, even if we restart the server
+            if 'product_list' not in request.session:
+                request.session['product_list'] = []
             request.session['user_id'] = Customer.objects.get(username=form.data.get('username')).id
             return HttpResponseRedirect("/landing/")
     else:
@@ -102,10 +104,6 @@ def confirm_order(request):
 
 
 def confirm_product(request):
-    # The session variable has always 'test' in the list, even if we restart the server
-    if 'product_list' not in request.session:
-        request.session['product_list'] = []
-
     product_list = request.session['product_list']
     
     if request.method == "POST":
