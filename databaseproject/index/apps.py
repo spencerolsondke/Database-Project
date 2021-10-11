@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 import schedule, time
 from datetime import datetime
+import os
 
 badges = []
 
@@ -29,10 +30,10 @@ def _check_order_delivered():
 
 
 def _check_badge_and_add_it():
-            # Add the current badge to the list
-            badges.append(current_badge)
-            # Reset the current badge
-            current_badge = Order_Badge((), datetime.now())
+    # Add the current badge to the list
+    badges.append(current_badge)
+    # Reset the current badge
+    current_badge = Order_Badge((), datetime.now())
 
 
 class IndexConfig(AppConfig):
@@ -40,28 +41,33 @@ class IndexConfig(AppConfig):
     name = 'index'
 
     def ready(self):
-        print('entered')
+        if os.environ.get('RUN_MAIN', None) != 'true':
+            print('entered')
 
-        from index.models import Orders, Customer, DeliveryPerson
-        from django.utils import timezone
-        from index.utils import Order_Badge
-        from index.utils import current_badge
-        import threading
+            from index.models import Orders, Customer, DeliveryPerson
+            from django.utils import timezone
+            from index.utils import Order_Badge
+            from index.utils import current_badge
+            import threading
 
-        def run_continuously():
-            stop = threading.Event()
-            class Schedule_Thread(threading.Thread):  
-                def run(cls):
-                    while not stop.is_set():
-                        schedule.run_pending()
-                        time.sleep(1)
+            def _print_current_badge():
+                print(current_badge)
 
-            continuous_thread = Schedule_Thread()
-            continuous_thread.start()
-            return stop
-        
-        # schedule.every(1).minutes.do(_check_order_process_time)
-        # schedule.every(1).minutes.do(_check_order_delivered)
-        schedule.every(1).minutes.do(_check_badge_and_add_it)
-        
-        stop_running = run_continuously()
+            def run_continuously():
+                stop = threading.Event()
+                class Schedule_Thread(threading.Thread):  
+                    def run(cls):
+                        while not stop.is_set():
+                            schedule.run_pending()
+                            time.sleep(1)
+
+                continuous_thread = Schedule_Thread()
+                continuous_thread.start()
+                return stop
+            
+            # schedule.every(1).minutes.do(_check_order_process_time)
+            # schedule.every(1).minutes.do(_check_order_delivered)
+            schedule.every(1).minutes.do(_check_badge_and_add_it)
+            schedule.every(1).seconds.do(_print_current_badge)
+            
+            stop_running = run_continuously()
