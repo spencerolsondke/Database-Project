@@ -44,18 +44,6 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
-
-class Orders(models.Model):
-    customer = models.ForeignKey(Customer, models.CASCADE, blank=True, null=True)
-    status = models.CharField(max_length=45)
-    order_time = models.DateTimeField()
-    order_delivery_time = models.DateTimeField()
-
-    class Meta:
-        managed = True
-        db_table = 'orders'
-
-
 class DeliveryPerson(models.Model):
     name = models.CharField(max_length=45)
     area = models.ForeignKey(Area, models.CASCADE, blank=True, null=True)
@@ -67,6 +55,18 @@ class DeliveryPerson(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Orders(models.Model):
+    customer = models.ForeignKey(Customer, models.CASCADE, blank=True, null=True)
+    status = models.CharField(max_length=45)
+    order_time = models.DateTimeField()
+    delivery_person = models.ForeignKey(DeliveryPerson, models.CASCADE, blank=True, null=True)
+    order_delivery_time = models.DateTimeField()
+
+    class Meta:
+        managed = True
+        db_table = 'orders'
 
 
 class Dessert(models.Model):

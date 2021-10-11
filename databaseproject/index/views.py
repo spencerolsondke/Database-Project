@@ -48,7 +48,7 @@ def landing(request):
     dessert_prices = ["{:,.2f}€".format(i) for i in cddp(Dessert)]
     dessert_ids = [dessert.product for dessert in desserts]
 
-    order_list = [get_Product(p).name for p in request.session['product_list']]
+    order_list = [{"name": get_Product(p["product_id"]).name, "amount": p["amount"]} for p in request.session['product_list']]
     context = {
         "first_name": first_name,
         "pizza_list": zip(pizzas, pizza_veg, pizza_toppings, pizza_prices, pizza_ids),
@@ -95,12 +95,15 @@ def confirm_order(request):
         order.save()
 
         for i in products:
-            products_to_order = Produc
+            products_to_order = Product_To_Orders.objects.create(order_id=order, product_id=Product.objects.get(id=i["product_id"]), amount=i["amount"])
+            products_to_order.save()
         
         # TODO Reset the session variable that stores the product list
+        request.session['product_list'] = []
     
         # Add the order to the badge
-        current_badge[Area.objects.get(customer.area).get('id')].append_order(order)
+        customer_area = customer.area.id
+        current_badge[customer_area].append_order(order)
     
         context = { 
             "product_list": request.session["product_list"],
@@ -122,7 +125,6 @@ def confirm_product(request):
         # for i in range(int(form.data.get('amount'))) :
         product_list = product_list+[{ 'product_id': int(form.data.get('id')), 'amount': int(form.data.get('amount'))}]
         request.session['product_list'] = product_list
-        print(request.session['product_list'])
         return HttpResponseRedirect('/landing/')
 
     if request.method == "GET":

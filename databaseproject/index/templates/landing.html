@@ -50,8 +50,12 @@
             <div class="bg-green-600 ml-auto p-3 -mt-5 mb-3 w-1/5 h-auto shadow-lg border-2 rounded-t-none border-t-0 border-r-0 border-l-0 border-black rounded-md">
                 <div class="bg-white border-2 border-black rounded-md">
                     <ul>
-                        {% for name in order_list %} 
-                            <li class="bg-gray-100 my-2 p-1">{{name}}</li>
+                        {% for order_item in order_list %} 
+                            <li class="bg-gray-100 my-2 p-1">
+                            {% for key, value in order_item.items %}
+                                {{value}}
+                            {% endfor %}
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
