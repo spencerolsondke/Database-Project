@@ -28,6 +28,13 @@ def _check_order_delivered():
             badge.set_status('Delivered')
 
 
+def _check_badge_and_add_it():
+            # Add the current badge to the list
+            badges.append(current_badge)
+            # Reset the current badge
+            current_badge = Order_Badge((), datetime.now())
+
+
 class IndexConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'index'
@@ -40,12 +47,6 @@ class IndexConfig(AppConfig):
         from index.utils import Order_Badge
         from index.utils import current_badge
         import threading
-
-        def _check_badge_and_add_it():
-            # Add the current badge to the list
-            badges.append(current_badge)
-            # Reset the current badge
-            current_badge = Order_Badge((), datetime.now())
 
         def run_continuously():
             stop = threading.Event()
