@@ -17,20 +17,24 @@ def get_Product(product_id):
 
 class Order_Badge():
     badge = []
+    area = None
     delivery_person = None
     time = None
     delivery_start_time = None
     status = 'In process'
 
-    def __init__(self, orders:list, time:datetime):
-        self.badge = orders
+    def __init__(self, area:Area, time:datetime):
+        self.area = area
         self.time = time
     
     def get_badge(self) -> list:
         return self.badge
 
+    def set_area(self, area:Area) -> None:
+        self.area = area
+
     def get_area(self) -> Area:
-        return self.badge[1].customer.area
+        return self.area
 
     def get_delivery_person(self) -> DeliveryPerson:
         return self.delivery_person
@@ -102,4 +106,5 @@ def compute_drink_dessert_prices(entity:models) -> list:
     return [i.product.price for i in entity.objects.all()]
 
 
-current_badge = Order_Badge([], datetime.now())
+current_time = datetime.now()
+current_badge = [Order_Badge(i, current_time) for i in Area.objects.all()]

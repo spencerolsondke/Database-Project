@@ -1,7 +1,7 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
-from index.models import Pizza, Area, Drink, Dessert, Customer, Orders, Product
+from index.models import Pizza, Area, Drink, Dessert, Customer, Orders, Product, Product_To_Orders
 from index.forms import Confirm_Product_Form, Register_Form
 from index.forms import Login_Form
 from index.utils import compute_pizza_prices as cpp, get_Product
@@ -66,7 +66,7 @@ def sign_up(request):
             # Add the customer to the database
             area = Area.objects.get(id=form.data.get('area_code')) # Access the area object to add it as a foreign key
             customer = Customer.objects.create(area=area, address=form.data.get('address'), name=form.data.get('name'), 
-                    username=form.data.get('username'), password=form.data.get('confirm_password'))
+                    phone=form.data.get('phone'), username=form.data.get('username'), password=form.data.get('confirm_password'))
             customer.save()
 
             return HttpResponseRedirect("/")
@@ -85,13 +85,16 @@ def confirm_order(request):
         customer = Customer.objects.filter(id=request.session['user_id']).get()
         order = Orders.objects.create(customer=customer, status="In process", 
                 order_time=datetime.utcnow(), order_delivery_time="1990-01-01 00:00")
+        
+        order.save()
+
         for i in products:
-            order.products.add(i)
+            products_to_order = Produc
         
         # TODO Reset the session variable that stores the product list
     
         # Add the order to the badge
-        current_badge.append_order(order)
+        current_badge[Area.objects.get(customer.area).get('id')].append_order(order)
     
         context = { 
             "product_list": request.session["product_list"],
@@ -110,8 +113,8 @@ def confirm_product(request):
     
     if request.method == "POST":
         form = Confirm_Product_Form(request.POST)
-        for i in range(int(form.data.get('amount'))) :
-            product_list = product_list+[form.data.get('id')]
+        # for i in range(int(form.data.get('amount'))) :
+        product_list = product_list+[{ 'product_id': form.data.get('id'), 'amount': int(form.data.get('amount'))}]
         request.session['product_list'] = product_list
         print(request.session['product_list'])
         return HttpResponseRedirect('/landing/')
