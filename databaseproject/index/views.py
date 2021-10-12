@@ -35,7 +35,7 @@ def landing(request):
     first_name = Customer.objects.get(id=request.session['user_id']).name.split(' ')[0]
 
     pizzas = Pizza.objects.all()
-    pizza_prices = ["{:,.2f}€".format(i) for i in cpp()]
+    pizza_prices = ["{:,.2f}€".format(i[1]) for i in cpp()]
     pizza_veg = ipv()
     pizza_toppings = [[topping.name for topping in pizza] for pizza in gpt()]
     pizza_ids = [pizza.product for pizza in pizzas]
@@ -48,13 +48,22 @@ def landing(request):
     dessert_prices = ["{:,.2f}€".format(i) for i in cddp(Dessert)]
     dessert_ids = [dessert.product for dessert in desserts]
 
-    order_list = [{"name": get_Product(p["product_id"]).name, "amount": p["amount"]} for p in request.session['product_list']]
+    order_list = [{"amount": p["amount"], "name": get_Product(p["product_id"]).name} for p in request.session['product_list']]
+    total_price = 0
+    for p in request.session['product_list']:
+        product_price = Product.objects.get(id=p['product_id']).price
+        if(product_price == -1):
+            product_price = [x[1] for x in cpp() if x[0] == p['product_id']][0]
+        total_price = total_price + (product_price * p['amount'])
+    total_price = "{:,.2f}€".format(total_price)
+
     context = {
         "first_name": first_name,
         "pizza_list": zip(pizzas, pizza_veg, pizza_toppings, pizza_prices, pizza_ids),
         "drink_list": zip(drinks, drink_prices, drink_ids),
         "dessert_list": zip(desserts, dessert_prices, dessert_ids),
-        "order_list": order_list
+        "order_list": order_list,
+        "total_price": total_price
     }
     return render(request, 'landing.html', context)
 
@@ -90,7 +99,7 @@ def confirm_order(request):
         products = request.session["product_list"]
         customer = Customer.objects.get(id=request.session['user_id'])
         order = Orders.objects.create(customer=customer, status="In process", 
-                order_time=datetime.utcnow(), order_delivery_time="1990-01-01 00:00")
+                order_time=datetime.now(), order_delivery_time=None)
         
         order.save()
 
@@ -100,9 +109,6 @@ def confirm_order(request):
         
         # Reset the session variable that stores the product list
         request.session['product_list'] = []
-    
-        # Add the order to the badge
-        _add_order_to_current_badge(customer.area.id-1, order)
     
         context = { 
             "product_list": request.session["product_list"],
@@ -134,6 +140,15 @@ def confirm_product(request):
         "form": form
     }
     return render(request, 'confirm_product.html', context)
+
+def cancel_order(request):
+    order_id = request.GET.get('order_id')
+    order = Orders.objects.get(id = order_id)
+
+    if(order.status == "In process"):
+       order.status = "Cancelled" 
+       order.save()
+    return HttpResponseRedirect('/order_status/')
 
 def order_status(request):
     user_orders = Orders.objects.filter(customer=request.session['user_id'])

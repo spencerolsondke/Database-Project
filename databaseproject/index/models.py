@@ -61,7 +61,7 @@ class Orders(models.Model):
     customer = models.ForeignKey(Customer, models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=45)
     order_time = models.DateTimeField()
-    order_delivery_time = models.DateTimeField()
+    order_delivery_time = models.DateTimeField(null=True)
 
     class Meta:
         managed = True
@@ -99,7 +99,6 @@ class Toppings(models.Model):
     name = models.CharField(max_length=45)
     vegetarian = models.IntegerField()
     price = models.FloatField()
-
 
     class Meta:
         managed = True

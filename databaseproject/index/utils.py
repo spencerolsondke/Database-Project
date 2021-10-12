@@ -52,9 +52,9 @@ class Order_Badge():
     def append_order(self, order: Orders):
         self.badge.append(order)
 
-    def set_status(status:str) -> None:
+    def set_status(self, status:str) -> None:
         self.status = status
-        for order in badge:
+        for order in self.badge:
             order.status = status
             order.save()
     
@@ -63,7 +63,7 @@ class Order_Badge():
 
     def set_delivery_start_time(self, time: datetime) -> None:
         self.delivery_start_time = time
-        for order in badge:
+        for order in self.badge:
             order.order_delivery_time = time
             order.save()
 
@@ -74,6 +74,9 @@ class Order_Badge():
         self.delivery_person.availibility = True
         self.delivery_person.save()
 
+current_time = datetime.now()
+current_badge = [Order_Badge(i, current_time) for i in Area.objects.all()]
+# current_badge[0].append_order(Orders.objects.first())
 
 def compute_pizza_prices() -> list:
     prices = []
@@ -82,7 +85,7 @@ def compute_pizza_prices() -> list:
         pizza_prices = round(sum([i.price for i in pizza.toppings.all()]), 2)
         pizza_prices = round(pizza_prices + pizza_prices*0.4, 2) # 40% margin for the pizza
         pizza_prices = round(pizza_prices + pizza_prices*0.09, 2) # 9% VAT
-        prices.append(pizza_prices)
+        prices.append((pizza.product_id, pizza_prices))
 
     return prices
 
@@ -114,12 +117,9 @@ def _get_current_badge() -> list:
     return current_badge
 
 def _add_order_to_current_badge(index: int, order: Orders):
-    current_badge[index].append_order(order)
+    current_badge[0].append_order(order)
 
 def _reset_current_badge() -> None:
     current_time = datetime.now()
     current_badge = [Order_Badge(i, current_time) for i in Area.objects.all()]
 
-
-current_time = datetime.now()
-current_badge = [Order_Badge(i, current_time) for i in Area.objects.all()]
