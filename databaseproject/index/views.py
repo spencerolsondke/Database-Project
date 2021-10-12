@@ -137,8 +137,9 @@ def confirm_product(request):
     return render(request, 'confirm_product.html', context)
 
 def order_status(request):
-    context = { "order_history": zip(Orders.objects.all()[:5], 
-                                    [str(d.order_time + timedelta(minutes=15)) for d in Orders.objects.all()[:5]],
-                                    [o.status for o in Orders.objects.all()])
+    user_orders = Orders.objects.filter(customer=request.session['user_id'])
+    context = { "order_history": zip(user_orders[:5], 
+                                    [str(d.order_time + timedelta(minutes=15)) for d in user_orders[:5]],
+                                    [o.status for o in user_orders[:5]])
     }
     return render(request, 'order_status.html', context)
